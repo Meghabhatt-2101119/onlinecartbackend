@@ -3,7 +3,7 @@ const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const HttpError = require("./util/http-error");
 require("dotenv").config();
-const PORT = process.env.PORT || PORT;
+const PORT = process.env.PORT || 6010;
 
 const MONGODB_URI = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@cluster0.mvrwaim.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`;
 
