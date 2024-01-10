@@ -3,7 +3,6 @@ const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const HttpError = require("./util/http-error");
 require("dotenv").config();
-const port = process.env.PORT || 4000;
 
 const MONGODB_URI = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@cluster0.mvrwaim.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`;
 
@@ -52,8 +51,8 @@ app.use((error, req, res, next) => {
 mongoose
   .connect(MONGODB_URI)
   .then(() => {
-    app.listen(port, "localhost", () => {
-      console.log("Backend is running at port " + port);
+    app.listen(process.env.PORT, "localhost", () => {
+      console.log("Backend is running at port " + process.env.PORT);
     });
   })
   .catch((err) => console.log(err));
