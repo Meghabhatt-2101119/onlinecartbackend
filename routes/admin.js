@@ -17,14 +17,11 @@ router.get("/get-products", isAuth, getProducts);
 router.post(
   "/add-product",
   [
-    body("title")
-      .notEmpty()
-      .isAlpha()
-      .withMessage("title should have alphabets only"),
+    body("title").notEmpty(),
     body("price").notEmpty().isNumeric(),
     body("description").notEmpty().isLength({ min: 5, max: 30 }),
   ],
-  isAuth,
+  // isAuth,
   upload.single("imageUrl"),
   postAddProduct
 );

@@ -4,7 +4,8 @@ const mongoose = require("mongoose");
 const HttpError = require("./util/http-error");
 require("dotenv").config();
 
-const MONGODB_URI = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@cluster0.mvrwaim.mongodb.net/${process.env.DB_NAME}?retryWrites=true&w=majority`;
+const MONGODB_URI =
+  "mongodb+srv://meghabhatt1108:npGzgr4Da2zxUZTW@cluster0.xzq3m9g.mongodb.net/ekart";
 
 const app = express();
 
@@ -51,7 +52,7 @@ app.use((error, req, res, next) => {
 mongoose
   .connect(MONGODB_URI)
   .then(() => {
-    app.listen(process.env.PORT, "localhost", () => {
+    app.listen(process.env.PORT || 3000, "localhost", () => {
       console.log("Backend is running at port " + process.env.PORT);
     });
   })

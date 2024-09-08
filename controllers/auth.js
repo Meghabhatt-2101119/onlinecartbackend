@@ -16,7 +16,7 @@ const transporter = nodemailer.createTransport({
 
 exports.postSignup = async (req, res, next) => {
   const valResult = validationResult(req);
-  if (!valResult.isEmpty()) {
+  if (valResult.isEmpty()) {
     return next(new HttpError(valResult.errors[0].msg, 422));
   }
   const { name, email, password } = req.body;
@@ -26,7 +26,6 @@ exports.postSignup = async (req, res, next) => {
   if (user) {
     return next(new HttpError("User Already exists!!", 409));
   }
-
   //2) Encrypt the password of the user
   let hashedPassword;
   try {

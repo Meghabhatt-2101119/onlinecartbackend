@@ -4,10 +4,14 @@ const Product = require("../models/product");
 const HttpError = require("../util/http-error");
 
 exports.postAddProduct = async (req, res, next) => {
+  console.log("reached");
+
   const valResult = validationResult(req);
-  if (!valResult.isEmpty()) {
-    return next(new HttpError(valResult.errors[0].msg, 422));
-  }
+  // if (!valResult.isEmpty()) {
+  //   console.log(valResult.errors);
+
+  //   return next(new HttpError(valResult.errors[0].msg, 422));
+  // }
   console.log(req.body);
   console.log(req.file);
   const { title, price, description } = req.body;
