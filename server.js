@@ -45,19 +45,6 @@ app.use("/uploads/images", express.static("uploads/images"));
 app.use(cors());
 app.options("*", cors());
 
-app.use((req, res, next) => {
-  res.send("Backend is live");
-});
-app.use(
-  "/api/login",
-  (req, res, next) => {
-    console.log("login route hitted");
-
-    postLogin; // Log when this route is hit
-    next();
-  },
-  adminRoutes
-);
 app.use((error, req, res, next) => {
   if (res.headerSent) {
     console.log(err);
