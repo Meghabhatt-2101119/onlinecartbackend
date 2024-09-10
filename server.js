@@ -52,7 +52,7 @@ app.use((error, req, res, next) => {
 mongoose
   .connect(MONGODB_URI)
   .then(() => {
-    app.listen(process.env.PORT || 3000, "localhost", () => {
+    app.listen(process.env.PORT || 3000, "0.0.0.0", () => {
       console.log("Backend is running at port " + process.env.PORT);
     });
   })
