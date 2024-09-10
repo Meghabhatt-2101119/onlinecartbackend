@@ -4,7 +4,11 @@ const mongoose = require("mongoose");
 const HttpError = require("./util/http-error");
 require("dotenv").config();
 const cors = require("cors");
-
+const adminRoutes = require("./routes/admin");
+const shopRoutes = require("./routes/shop");
+const authRoutes = require("./routes/auth");
+const paymentRoutes = require("./routes/payments");
+const { postLogin } = require("./controllers/auth");
 const { expressjwt } = require("express-jwt");
 
 const MONGODB_URI =
@@ -25,18 +29,12 @@ app.use(
       if (Date.now() - err.inner.expiredAt < 5000) {
         return;
       }
-      console.log(err);
+      console.log("error at jwt", err);
 
       throw err;
     },
   })
 );
-
-const adminRoutes = require("./routes/admin");
-const shopRoutes = require("./routes/shop");
-const authRoutes = require("./routes/auth");
-const paymentRoutes = require("./routes/payments");
-const { postLogin } = require("./controllers/auth");
 
 app.use(bodyParser.json());
 app.use("/uploads/images", express.static("uploads/images"));
@@ -45,15 +43,15 @@ app.use("/uploads/images", express.static("uploads/images"));
 app.use(cors());
 app.options("*", cors());
 
-app.use((error, req, res, next) => {
-  if (res.headerSent) {
-    console.log(err);
+// app.use((error, req, res, next) => {
+//   if (res.headerSent) {
+//     console.log(err);
 
-    return next(error);
-  }
-  res.status(error.status || 500);
-  res.json({ message: error.message || "An unknown error occurred" });
-});
+//     return next(error);
+//   }
+//   res.status(error.status || 500);
+//   res.json({ message: error.message || "An unknown error occurred" });
+// });
 app.use("/api/admin", adminRoutes);
 app.use("/api", shopRoutes);
 app.use("/api", authRoutes);
@@ -68,4 +66,4 @@ mongoose
       console.log("Backend is running at port " + process.env.PORT);
     });
   })
-  .catch((err) => console.log(err));
+  .catch((err) => console.log("errir at db", err));
