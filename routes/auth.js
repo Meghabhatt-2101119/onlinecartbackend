@@ -6,8 +6,9 @@ const {
   postReset,
   updatePassword,
 } = require("../controllers/auth");
+console.log("inside routes");
 
-const {  body } = require("express-validator");
+const { body } = require("express-validator");
 
 const router = express.Router();
 

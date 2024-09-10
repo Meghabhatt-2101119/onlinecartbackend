@@ -53,6 +53,8 @@ exports.postSignup = async (req, res, next) => {
 };
 
 exports.postLogin = async (req, res, next) => {
+  console.log("inside login");
+
   const { email, password } = req.body;
   //1) Check whether the email exists or not
   const user = await User.findOne({ email: email });
