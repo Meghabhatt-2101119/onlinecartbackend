@@ -36,6 +36,7 @@ const adminRoutes = require("./routes/admin");
 const shopRoutes = require("./routes/shop");
 const authRoutes = require("./routes/auth");
 const paymentRoutes = require("./routes/payments");
+const { postLogin } = require("./controllers/auth");
 
 app.use(bodyParser.json());
 app.use("/uploads/images", express.static("uploads/images"));
@@ -44,19 +45,19 @@ app.use("/uploads/images", express.static("uploads/images"));
 app.use(cors());
 app.options("*", cors());
 
-app.use("/api/admin", adminRoutes);
-app.use("/api", shopRoutes);
-app.use("/api", authRoutes);
-app.use("/api/payment", paymentRoutes);
-
 app.use((req, res, next) => {
   res.send("Backend is live");
 });
+app.use(
+  "/api/login",
+  (req, res, next) => {
+    console.log("login route hitted");
 
-app.use((req, res, next) => {
-  throw new HttpError("Couldn't find this route", 404);
-});
-
+    postLogin; // Log when this route is hit
+    next();
+  },
+  adminRoutes
+);
 app.use((error, req, res, next) => {
   if (res.headerSent) {
     console.log(err);
@@ -66,7 +67,13 @@ app.use((error, req, res, next) => {
   res.status(error.status || 500);
   res.json({ message: error.message || "An unknown error occurred" });
 });
-
+app.use("/api/admin", adminRoutes);
+app.use("/api", shopRoutes);
+app.use("/api", authRoutes);
+app.use("/api/payment", paymentRoutes);
+app.use((req, res, next) => {
+  throw new HttpError("Couldn't find this route", 404);
+});
 mongoose
   .connect(MONGODB_URI)
   .then(() => {
