@@ -3,11 +3,31 @@ const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const HttpError = require("./util/http-error");
 require("dotenv").config();
+const cors = require("cors");
+
+const { expressjwt } = require("express-jwt");
 
 const MONGODB_URI =
   "mongodb+srv://meghabhatt1108:npGzgr4Da2zxUZTW@cluster0.xzq3m9g.mongodb.net/ekart";
-
 const app = express();
+
+app.use(express.json());
+
+app.use(
+  expressjwt({
+    // @ts-ignore
+    secret: process.env.JWT_KEY,
+    credentialsRequired: false,
+    algorithms: ["HS256"],
+    onExpired: async (req, err) => {
+      // @ts-ignore
+      if (Date.now() - err.inner.expiredAt < 5000) {
+        return;
+      }
+      throw err;
+    },
+  })
+);
 
 const adminRoutes = require("./routes/admin");
 const shopRoutes = require("./routes/shop");
@@ -18,15 +38,8 @@ app.use(bodyParser.json());
 app.use("/uploads/images", express.static("uploads/images"));
 
 //CORS middleware
-app.use((req, res, next) => {
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader(
-    "Access-Control-Allow-Methods",
-    "GET, POST, PUT, PATCH, DELETE, OPTIONS"
-  );
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
-  next();
-});
+app.use(cors());
+app.options("*", cors());
 
 app.use("/api/admin", adminRoutes);
 app.use("/api", shopRoutes);
@@ -52,7 +65,7 @@ app.use((error, req, res, next) => {
 mongoose
   .connect(MONGODB_URI)
   .then(() => {
-    app.listen(process.env.PORT || 3000, "0.0.0.0", () => {
+    app.listen(process.env.PORT || 3000, () => {
       console.log("Backend is running at port " + process.env.PORT);
     });
   })
