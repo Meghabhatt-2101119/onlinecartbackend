@@ -77,6 +77,8 @@ exports.postLogin = async (req, res, next) => {
       return next(new HttpError("Invalid email or password", 401));
     }
   } catch (err) {
+    console.log(err);
+
     next(new HttpError("Internal Server Error", 500));
   }
 };
