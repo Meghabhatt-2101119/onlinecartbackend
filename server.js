@@ -63,9 +63,9 @@ app.use("/api/admin", adminRoutes);
 app.use("/api", shopRoutes);
 app.use("/api", authRoutes);
 // app.use("/api/payment", paymentRoutes);
-app.use((req, res, next) => {
-  throw new HttpError("Couldn't find this route", 404);
-});
+// app.use((req, res, next) => {
+//   throw new HttpError("Couldn't find this route", 404);
+// });
 mongoose
   .connect(MONGODB_URI)
   .then(() => {
