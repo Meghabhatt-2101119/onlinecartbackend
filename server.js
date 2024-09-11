@@ -16,33 +16,40 @@ const MONGODB_URI =
 const app = express();
 
 app.use(express.json());
+
 console.log("here");
-
+//CORS middleware
 app.use(
-  expressjwt({
-    // @ts-ignore
-    secret: process.env.JWT_KEY,
-    credentialsRequired: false,
-    algorithms: ["HS256"],
-    onExpired: async (req, err) => {
-      // @ts-ignore
-      if (Date.now() - err.inner.expiredAt < 5000) {
-        return;
-      }
-      console.log("error at jwt", err);
-
-      throw err;
-    },
+  cors({
+    origin: "*", // Allow all origins for testing
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
 
+// app.use(
+//   expressjwt({
+//     // @ts-ignore
+//     secret: process.env.JWT_KEY,
+//     credentialsRequired: false,
+//     algorithms: ["HS256"],
+//     onExpired: async (req, err) => {
+//       // @ts-ignore
+//       if (Date.now() - err.inner.expiredAt < 5000) {
+//         return;
+//       }
+//       console.log("error at jwt", err);
+
+//       throw err;
+//     },
+//   })
+// );
+
 app.use(bodyParser.json());
 app.use("/uploads/images", express.static("uploads/images"));
-
-//CORS middleware
-app.use(cors());
-app.options("*", cors());
-
+app.get("/test", (req, res) => {
+  res.send("Server is working!");
+});
 // app.use((error, req, res, next) => {
 //   if (res.headerSent) {
 //     console.log(err);
