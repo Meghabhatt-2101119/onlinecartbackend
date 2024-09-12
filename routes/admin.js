@@ -21,7 +21,7 @@ router.post(
     body("price").notEmpty().isNumeric(),
     body("description").notEmpty().isLength({ min: 5, max: 30 }),
   ],
-  // isAuth,
+  isAuth,
   upload.single("imageUrl"),
   postAddProduct
 );

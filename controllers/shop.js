@@ -10,6 +10,12 @@ const HttpError = require("../util/http-error");
 exports.getLatestProducts = async (req, res, next) => {
   try {
     const products = await Product.find().sort({ createdAt: "desc" });
+    const updatedProducts = products.map((product) => {
+      return {
+        ...product._doc, // Spread the product document properties
+        imageUrl: product.imageUrl.replace(/\\/g, "/"), // Replace backslashes with forward slashes
+      };
+    });
     res.status(200).json({ products: products });
   } catch (err) {
     next(new HttpError("Internal Server Error", 500));

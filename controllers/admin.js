@@ -7,11 +7,11 @@ exports.postAddProduct = async (req, res, next) => {
   console.log("reached");
 
   const valResult = validationResult(req);
-  // if (!valResult.isEmpty()) {
-  //   console.log(valResult.errors);
+  if (!valResult.isEmpty()) {
+    console.log(valResult.errors);
 
-  //   return next(new HttpError(valResult.errors[0].msg, 422));
-  // }
+    return next(new HttpError(valResult.errors[0].msg, 422));
+  }
   console.log(req.body);
   console.log(req.file);
   const { title, price, description } = req.body;

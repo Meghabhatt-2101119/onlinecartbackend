@@ -8,8 +8,6 @@ const adminRoutes = require("./routes/admin");
 const shopRoutes = require("./routes/shop");
 const authRoutes = require("./routes/auth");
 const paymentRoutes = require("./routes/payments");
-const { postLogin } = require("./controllers/auth");
-const { expressjwt } = require("express-jwt");
 
 const MONGODB_URI =
   "mongodb+srv://meghabhatt1108:npGzgr4Da2zxUZTW@cluster0.xzq3m9g.mongodb.net/ekart";
@@ -17,48 +15,19 @@ const app = express();
 
 app.use(express.json());
 
-console.log("here");
 //CORS middleware
 app.use(
   cors({
     origin: "*", // Allow all origins for testing
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    methods: ["GET", "POST", "PATCH", "DELETE", "PUT"],
     allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
-
-// app.use(
-//   expressjwt({
-//     // @ts-ignore
-//     secret: process.env.JWT_KEY,
-//     credentialsRequired: false,
-//     algorithms: ["HS256"],
-//     onExpired: async (req, err) => {
-//       // @ts-ignore
-//       if (Date.now() - err.inner.expiredAt < 5000) {
-//         return;
-//       }
-//       console.log("error at jwt", err);
-
-//       throw err;
-//     },
-//   })
-// );
+app.options("*", cors()); // Enable preflight (OPTIONS) requests for all routes
 
 app.use(bodyParser.json());
 app.use("/uploads/images", express.static("uploads/images"));
-app.get("/test", (req, res) => {
-  res.send("Server is working!");
-});
-// app.use((error, req, res, next) => {
-//   if (res.headerSent) {
-//     console.log(err);
 
-//     return next(error);
-//   }
-//   res.status(error.status || 500);
-//   res.json({ message: error.message || "An unknown error occurred" });
-// });
 app.use("/api/admin", adminRoutes);
 app.use("/api", shopRoutes);
 app.use("/api", authRoutes);
